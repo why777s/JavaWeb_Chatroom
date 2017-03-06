@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>聊天室</title>
+		<meta name="keywords" content="keyword1,keyword2,keyword3">
+		<meta name="description" content="this is my page">
+		<meta name="content-type" content="text/html; charset=UTF-8">
+		<link href="css/char_room.css" type="text/css" rel="stylesheet"/>
+		<script  type="text/javascript">
+            var ws;
+            var wsUri = "ws://localhost:8080/echo";
+            ws = new WebSocket(wsUri);
+
+            ws.onopen = function(){
+                n=prompt("请给自己取个昵称：");
+                n=n.substr(0,16);
+                ws.send(n);//在服务端必须由OnMessage接收此消息
+            };
+
+            //处理连接后的信息处理
+            ws.onmessage = function(message){
+                writeToScreen(message.data);
+            };
+
+            //对发送按钮进行监听，获取发送的信息和发送对象
+            function button(){
+                message = document.getElementById('in').value;
+                towho = document.getElementById('towho').value + "@";
+                ws.send(towho+message);
+            }
+
+            //发生错误时，处理错误
+            ws.onerror = function (evt){
+                writeToScreen('<span style="color:red;">ERROR:</span>'+evt.data);
+                ws.close();
+            };
+
+            //把信息显示到当前屏幕
+            function writeToScreen(message){
+                var pre = document.createElement("p");
+                pre.style.wordWrap = "break-word";
+                pre.innerHTML = message;
+                output.appendChild(pre);
+            }
+
+            //当关闭页面时执行ws.close
+            window.onbeforeunload=function (){
+                ws.close();
+            };
+		</script>
+	</head>
+	<body>
+		
+		<div class="wrap">
+		<div class="view" id="output"> </div>  <br>
+		<div style="text-align:left;">
+			<br />
+
+    		<form  action="">
+        		<input class="view2" id="in" name="message" value="" type="text" placeholder="请在这里输入文字">		
+        <br><br>
+        <div class="sendto">
+        		<input id="btn1" onclick="button()" value="发送" type="button"/>
+        To：
+        <input id="towho" name="towho" value="all">
+        </div>
+        <br>
+    </form>
+    </div>
+</div>
+	</body>
+</html>

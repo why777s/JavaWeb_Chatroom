@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <package name="a" extends="struts-default">
+        <action name="loginAction" class="why777s.Controller.LoginRegistAction">
+            <result name="success" type="redirect">/chat_room.html</result>
+            <result name="error">/error.jsp</result>
+            <result name="input">/login.jsp</result>
+        </action>
+        <action name="registAction" class="why777s.Controller.LoginRegistAction" method="regist">
+            <result name="success" type="redirect">/regist_success.jsp</result>
+            <result name="error" type="redirect">/regist_error.jsp</result>
+            <result name="input">/regist.jsp</result>
+
+        </action>
+    </package>
+
+    <constant name="struts.action.extension" value="/wsServlet"/>
+
+</struts>
